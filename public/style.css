@@ -1,0 +1,185 @@
+/* public/style.css */
+:root {
+    --bg-color: #f0f4f8;
+    --container-bg: #ffffff;
+    --text-color: #333333;
+    --primary-color: #4CAF50;
+    
+    /* Kind Character Variables */
+    --char-bg: #e0f7fa;
+    --char-border: #b2ebf2;
+    --char-radius: 50%;
+    --eye-bg: #ffffff;
+    --pupil-color: #00bcd4;
+    --eyebrow-rotation: 0deg;
+    --eyebrow-pos: -15px;
+    --pupil-shadow: none;
+}
+
+[data-theme="dark"] {
+    --bg-color: #121212;
+    --container-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --primary-color: #bb86fc;
+    
+    /* Villain Character Variables */
+    --char-bg: #2d2d2d;
+    --char-border: #ff3b30;
+    --char-radius: 15px;
+    --eye-bg: #000000;
+    --pupil-color: #ff3b30;
+    --eyebrow-rotation: 15deg;
+    --eyebrow-pos: -5px;
+    --pupil-shadow: 0 0 10px #ff3b30;
+}
+
+* {
+    box-sizing: border-box;
+    transition: background-color 0.5s ease, color 0.5s ease, border-radius 0.5s ease, transform 0.3s ease;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+.theme-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.login-container {
+    background-color: var(--container-bg);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    width: 350px;
+    position: relative;
+    text-align: center;
+}
+
+/* Character Styling */
+.character {
+    width: 120px;
+    height: 120px;
+    background-color: var(--char-bg);
+    border: 4px solid var(--char-border);
+    border-radius: var(--char-radius);
+    margin: 0 auto 30px auto;
+    position: relative;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.eyebrow {
+    position: absolute;
+    width: 35px;
+    height: 6px;
+    background-color: var(--text-color);
+    top: var(--eyebrow-pos);
+    transition: all 0.4s ease;
+    opacity: 0; /* Hidden in kind theme, visible in villain */
+}
+
+[data-theme="dark"] .eyebrow {
+    opacity: 1;
+}
+
+.left-eyebrow { left: 15px; transform: rotate(var(--eyebrow-rotation)); }
+.right-eyebrow { right: 15px; transform: rotate(calc(var(--eyebrow-rotation) * -1)); }
+
+.eye {
+    width: 35px;
+    height: 45px;
+    background-color: var(--eye-bg);
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+    transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s;
+}
+
+.pupil {
+    width: 15px;
+    height: 15px;
+    background-color: var(--pupil-color);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: var(--pupil-shadow);
+    transition: all 0.1s ease-out; /* Fast follow */
+}
+
+/* Eyes Closed State */
+.character.eyes-closed .eye {
+    height: 4px;
+    transform: translateY(20px);
+}
+.character.eyes-closed .pupil {
+    opacity: 0;
+}
+
+/* Form Styles */
+h2 { margin-top: 0; }
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+.password-wrapper {
+    position: relative;
+}
+.eye-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+}
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+}
+.login-btn:hover {
+    filter: brightness(1.1);
+}
