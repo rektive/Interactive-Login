@@ -3,140 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Portfolio Login</title>
+    <title>Cartoon Interactive Login</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Immersive Background Scenery -->
-    <div class="scenery-container">
-        <!-- Mountain Scenery (Light / Kind) -->
-        <div class="scenery scenery-light">
-            <div class="sun"></div>
-            <div class="mountain mountain-back"></div>
-            <div class="mountain mountain-mid"></div>
-            <div class="mountain mountain-fore"></div>
-            <div class="fog"></div>
+    <!-- ATMOSPHERIC BACKGROUND SCENERY -->
+    <div class="scenery-viewport">
+        <!-- Light Theme: Floating Sunlit Alpine Meadow & Cloud Castles -->
+        <div class="scene scene-light">
+            <div class="sun-orb"></div>
+            <div class="cloud-layer cloud-far"></div>
+            <div class="floating-island island-left"></div>
+            <div class="floating-island island-right"></div>
+            <div class="pine-silhouette"></div>
+            <div class="cloud-layer cloud-near"></div>
         </div>
 
-        <!-- Volcanic / Storm Scenery (Dark / Villain) -->
-        <div class="scenery scenery-dark">
+        <!-- Dark Theme: Gothic Transylvanian Castle Balcony at Midnight -->
+        <div class="scene scene-dark">
             <div class="blood-moon"></div>
-            <div class="dark-crags crag-back"></div>
-            <div class="dark-crags crag-fore"></div>
-            <div class="ambient-glow"></div>
-            <div class="embers"></div>
+            <div class="fog-banks"></div>
+            <div class="gothic-spires"></div>
+            <div class="bats-flock">
+                <span class="bat b1">🦇</span>
+                <span class="bat b2">🦇</span>
+                <span class="bat b3">🦇</span>
+            </div>
+            <div class="crimson-fog"></div>
         </div>
     </div>
 
-    <!-- Theme Switcher Button -->
-    <button id="theme-toggle" class="theme-switch-btn" aria-label="Toggle theme">
-        <span class="icon">☀️</span>
-        <span class="label">Switch to Villain</span>
-    </button>
+    <!-- SIMPLE THEME TOGGLE BUTTON -->
+    <button id="theme-toggle" class="theme-btn" type="button">Dark</button>
 
-    <!-- Main Card Container -->
-    <main class="login-wrapper">
-        <!-- Human Avatar Stage -->
-        <div class="avatar-stage">
-            <div class="human-avatar" id="avatar">
-                <!-- Hair Background Layer -->
-                <div class="hair-back"></div>
+    <!-- MAIN INTERACTIVE STAGE -->
+    <main class="stage-container">
+        <!-- SVG CARTOON CHARACTER RIG -->
+        <div class="character-rig" id="character-rig">
+            <!-- 1. CELESTIAL SUN GUARDIAN (KIND) -->
+            <svg class="char-svg" id="kind-char" viewBox="0 0 320 340">
+                <defs>
+                    <linearGradient id="kind-hair" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#fed7aa"/>
+                        <stop offset="100%" stop-color="#f59e0b"/>
+                    </linearGradient>
+                    <linearGradient id="kind-skin" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#ffe4d6"/>
+                        <stop offset="100%" stop-color="#fbcfe8"/>
+                    </linearGradient>
+                    <linearGradient id="kind-tunic" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#38bdf8"/>
+                        <stop offset="100%" stop-color="#1d4ed8"/>
+                    </linearGradient>
+                </defs>
 
-                <!-- Ears -->
-                <div class="ear ear-left"></div>
-                <div class="ear ear-right"></div>
+                <!-- Floating Halo -->
+                <ellipse class="halo" cx="160" cy="45" rx="55" ry="14" fill="none" stroke="#fde047" stroke-width="6" opacity="0.9" />
 
-                <!-- Face Base -->
-                <div class="face">
+                <!-- Torso & Shoulders -->
+                <g class="torso-group">
+                    <path d="M70,340 Q160,250 250,340 Z" fill="url(#kind-tunic)" />
+                    <!-- Golden Armor Mantle -->
+                    <path d="M100,280 Q160,320 220,280 L235,340 L85,340 Z" fill="#fbbf24" />
+                    <!-- Neck -->
+                    <rect x="144" y="220" width="32" height="35" rx="10" fill="url(#kind-skin)" />
+                </g>
+
+                <!-- Animated Head Rig -->
+                <g class="head-group" id="kind-head">
+                    <!-- Hair Back -->
+                    <path d="M95,160 Q80,70 160,65 Q240,70 225,160 Z" fill="url(#kind-hair)" />
+                    <!-- Ears -->
+                    <ellipse cx="98" cy="175" rx="10" ry="14" fill="#fca5a5" />
+                    <ellipse cx="222" cy="175" rx="10" ry="14" fill="#fca5a5" />
+                    <!-- Face Shape -->
+                    <path d="M105,140 Q100,240 160,245 Q220,240 215,140 Q215,95 160,95 Q105,95 105,140 Z" fill="url(#kind-skin)" />
+                    <!-- Rosy Cheeks -->
+                    <ellipse class="blush" cx="122" cy="195" rx="12" ry="7" fill="#fb7185" opacity="0.6" />
+                    <ellipse class="blush" cx="198" cy="195" rx="12" ry="7" fill="#fb7185" opacity="0.6" />
+                    <!-- Cute Button Nose -->
+                    <path d="M156,180 Q160,185 164,180" stroke="#f43f5e" stroke-width="3" fill="none" stroke-linecap="round" />
+                    
                     <!-- Eyebrows -->
-                    <div class="eyebrows">
-                        <div class="eyebrow eyebrow-left"></div>
-                        <div class="eyebrow eyebrow-right"></div>
-                    </div>
+                    <g class="eyebrows">
+                        <path class="brow brow-left" d="M118,142 Q132,134 146,142" stroke="#b45309" stroke-width="4.5" stroke-linecap="round" fill="none" />
+                        <path class="brow brow-right" d="M174,142 Q188,134 202,142" stroke="#b45309" stroke-width="4.5" stroke-linecap="round" fill="none" />
+                    </g>
 
-                    <!-- Eyes Container -->
-                    <div class="eyes-container">
-                        <div class="eye eye-left" id="eye-left">
-                            <div class="eyelid eyelid-top"></div>
-                            <div class="sclera">
-                                <div class="iris">
-                                    <div class="pupil"></div>
-                                    <div class="glint glint-1"></div>
-                                    <div class="glint glint-2"></div>
-                                </div>
-                            </div>
-                            <div class="eyelid eyelid-bottom"></div>
-                        </div>
+                    <!-- Eyes -->
+                    <g class="eye-socket eye-left" transform="translate(116, 150)">
+                        <ellipse cx="14" cy="14" rx="14" ry="14" fill="#ffffff" />
+                        <g class="iris-pupil" id="kind-iris-l">
+                            <circle cx="14" cy="14" r="8" fill="#0284c7" />
+                            <circle cx="14" cy="14" r="4.5" fill="#0f172a" />
+                            <circle cx="11" cy="11" r="2.5" fill="#ffffff" />
+                        </g>
+                    </g>
+                    <g class="eye-socket eye-right" transform="translate(176, 150)">
+                        <ellipse cx="14" cy="14" rx="14" ry="14" fill="#ffffff" />
+                        <g class="iris-pupil" id="kind-iris-r">
+                            <circle cx="14" cy="14" r="8" fill="#0284c7" />
+                            <circle cx="14" cy="14" r="4.5" fill="#0f172a" />
+                            <circle cx="11" cy="11" r="2.5" fill="#ffffff" />
+                        </g>
+                    </g>
 
-                        <div class="eye eye-right" id="eye-right">
-                            <div class="eyelid eyelid-top"></div>
-                            <div class="sclera">
-                                <div class="iris">
-                                    <div class="pupil"></div>
-                                    <div class="glint glint-1"></div>
-                                    <div class="glint glint-2"></div>
-                                </div>
-                            </div>
-                            <div class="eyelid eyelid-bottom"></div>
-                        </div>
-                    </div>
+                    <!-- Smiling Cartoon Mouth -->
+                    <path class="mouth" id="kind-mouth" d="M142,212 Q160,226 178,212" stroke="#e11d48" stroke-width="4" stroke-linecap="round" fill="none" />
+                    <!-- Fluffy Front Hair Tufts -->
+                    <path d="M102,130 Q140,85 170,120 Q190,95 218,125 Q205,100 160,95 Q115,100 102,130 Z" fill="url(#kind-hair)" />
+                </g>
 
-                    <!-- Nose -->
-                    <div class="nose"></div>
+                <!-- Rigged Arms & Hands (Hidden by default, swoops up to cover eyes) -->
+                <g class="hands-cover-rig" id="kind-hands">
+                    <!-- Left Arm/Hand -->
+                    <g class="arm-left">
+                        <path d="M50,340 C60,250 110,210 135,165" stroke="#38bdf8" stroke-width="26" stroke-linecap="round" fill="none" />
+                        <ellipse cx="132" cy="162" rx="19" ry="15" fill="#ffffff" stroke="#e0f2fe" stroke-width="3" transform="rotate(-15 132 162)" />
+                    </g>
+                    <!-- Right Arm/Hand -->
+                    <g class="arm-right">
+                        <path d="M270,340 C260,250 210,210 185,165" stroke="#38bdf8" stroke-width="26" stroke-linecap="round" fill="none" />
+                        <ellipse cx="188" cy="162" rx="19" ry="15" fill="#ffffff" stroke="#e0f2fe" stroke-width="3" transform="rotate(15 188 162)" />
+                    </g>
+                </g>
+            </svg>
 
-                    <!-- Cheeks (Kind Blush / Villain Shadow) -->
-                    <div class="cheek-tone cheek-left"></div>
-                    <div class="cheek-tone cheek-right"></div>
+            <!-- 2. COUNT VLADISLAUS (VAMPIRE VILLAIN) -->
+            <svg class="char-svg" id="vamp-char" viewBox="0 0 320 340">
+                <defs>
+                    <linearGradient id="vamp-skin" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#e2e8f0"/>
+                        <stop offset="100%" stop-color="#94a3b8"/>
+                    </linearGradient>
+                    <linearGradient id="vamp-cape-inside" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#dc2626"/>
+                        <stop offset="100%" stop-color="#450a0a"/>
+                    </linearGradient>
+                </defs>
 
-                    <!-- Dynamic Mouth -->
-                    <div class="mouth" id="mouth"></div>
-                </div>
+                <!-- High Dracula Gothic Collar -->
+                <path class="vamp-collar" d="M60,340 L100,160 L140,230 L160,240 L180,230 L220,160 L260,340 Z" fill="url(#vamp-cape-inside)" stroke="#991b1b" stroke-width="3" />
 
-                <!-- Hair Foreground Layer -->
-                <div class="hair-front"></div>
-            </div>
+                <!-- Torso / Tuxedo -->
+                <g class="torso-group">
+                    <path d="M70,340 Q160,270 250,340 Z" fill="#0f0d14" />
+                    <!-- Crimson Ascot & Medallion -->
+                    <path d="M145,260 L175,260 L168,310 L160,320 L152,310 Z" fill="#b91c1c" />
+                    <circle cx="160" cy="275" r="7" fill="#fbbf24" stroke="#78350f" stroke-width="2" />
+                    <!-- Pale Aristocrat Neck -->
+                    <rect x="146" y="215" width="28" height="40" rx="6" fill="url(#vamp-skin)" />
+                </g>
+
+                <!-- Animated Head Rig -->
+                <g class="head-group" id="vamp-head">
+                    <!-- Slicked Widow's Peak Hair Back -->
+                    <path d="M92,150 Q85,55 160,50 Q235,55 228,150 Z" fill="#09050d" />
+                    <!-- Pointed Nosferatu Ears -->
+                    <polygon points="94,175 75,150 98,160" fill="#cbd5e1" stroke="#64748b" stroke-width="2" />
+                    <polygon points="226,175 245,150 222,160" fill="#cbd5e1" stroke="#64748b" stroke-width="2" />
+                    <!-- Angular Jaw -->
+                    <path d="M102,130 L106,180 L160,245 L214,180 L218,130 Q218,85 160,85 Q102,85 102,130 Z" fill="url(#vamp-skin)" />
+                    <!-- Sharp Cheek Contours -->
+                    <path d="M112,185 L125,198" stroke="#64748b" stroke-width="2.5" stroke-linecap="round" />
+                    <path d="M208,185 L195,198" stroke="#64748b" stroke-width="2.5" stroke-linecap="round" />
+                    <!-- Sharp Aquiline Nose -->
+                    <polygon points="160,165 153,190 162,188" fill="#64748b" />
+
+                    <!-- Wicked Slanted Eyebrows -->
+                    <g class="eyebrows">
+                        <path class="brow brow-left" d="M112,142 Q130,128 148,146" stroke="#000000" stroke-width="5" stroke-linecap="round" fill="none" />
+                        <path class="brow brow-right" d="M172,146 Q190,128 208,142" stroke="#000000" stroke-width="5" stroke-linecap="round" fill="none" />
+                    </g>
+
+                    <!-- Piercing Crimson Vampire Eyes -->
+                    <g class="eye-socket eye-left" transform="translate(114, 150)">
+                        <ellipse cx="14" cy="13" rx="14" ry="10" fill="#1e1b2e" />
+                        <g class="iris-pupil" id="vamp-iris-l">
+                            <circle cx="14" cy="13" r="8" fill="#ef4444" />
+                            <ellipse cx="14" cy="13" rx="2.5" ry="6" fill="#450a0a" /> <!-- Slit pupil -->
+                            <circle cx="12" cy="10" r="1.5" fill="#fecaca" />
+                        </g>
+                    </g>
+                    <g class="eye-socket eye-right" transform="translate(178, 150)">
+                        <ellipse cx="14" cy="13" rx="14" ry="10" fill="#1e1b2e" />
+                        <g class="iris-pupil" id="vamp-iris-r">
+                            <circle cx="14" cy="13" r="8" fill="#ef4444" />
+                            <ellipse cx="14" cy="13" rx="2.5" ry="6" fill="#450a0a" /> <!-- Slit pupil -->
+                            <circle cx="12" cy="10" r="1.5" fill="#fecaca" />
+                        </g>
+                    </g>
+
+                    <!-- Sneering Mouth with Fangs -->
+                    <g class="mouth-group" id="vamp-mouth">
+                        <path class="mouth" d="M142,216 Q160,210 178,214" stroke="#450a0a" stroke-width="3.5" stroke-linecap="round" fill="none" />
+                        <!-- Fangs -->
+                        <polygon class="fang fang-l" points="147,216 151,216 149,224" fill="#ffffff" />
+                        <polygon class="fang fang-r" points="171,215 175,215 173,223" fill="#ffffff" />
+                    </g>
+
+                    <!-- Dracula Widow's Peak Bangs -->
+                    <path d="M100,125 Q130,105 160,135 Q190,105 220,125 Q210,85 160,82 Q110,85 100,125 Z" fill="#09050d" />
+                </g>
+
+                <!-- Rigged Vampire Claws / Hands -->
+                <g class="hands-cover-rig" id="vamp-hands">
+                    <!-- Left Claw -->
+                    <g class="arm-left">
+                        <path d="M40,340 C50,230 100,195 130,165" stroke="#09050d" stroke-width="26" stroke-linecap="round" fill="none" />
+                        <path d="M120,172 L140,154 L138,142 L130,146 L124,142 L120,148 L114,146 L112,154 Z" fill="url(#vamp-skin)" stroke="#475569" stroke-width="1.5" />
+                    </g>
+                    <!-- Right Claw -->
+                    <g class="arm-right">
+                        <path d="M280,340 C270,230 220,195 190,165" stroke="#09050d" stroke-width="26" stroke-linecap="round" fill="none" />
+                        <path d="M200,172 L180,154 L182,142 L190,146 L196,142 L200,148 L206,146 L208,154 Z" fill="url(#vamp-skin)" stroke="#475569" stroke-width="1.5" />
+                    </g>
+                </g>
+            </svg>
         </div>
 
-        <!-- Glassmorphism Login Form -->
-        <form class="glass-form" id="login-form" autocomplete="off" onsubmit="event.preventDefault();">
-            <header class="form-header">
-                <h1 id="title-text">Welcome Back</h1>
-                <p id="subtitle-text">Enter your credentials to continue</p>
-            </header>
-
-            <div class="form-group">
-                <label for="username">Username or Email</label>
-                <div class="input-container">
-                    <input type="text" id="username" placeholder="alex.mercer@example.com" spellcheck="false" required>
-                    <span class="focus-ring"></span>
+        <!-- HIGH-END LOGIN CARD -->
+        <div class="card-wrapper">
+            <form class="login-card" id="login-form" autocomplete="off" onsubmit="event.preventDefault();">
+                <div class="card-header">
+                    <h2 id="card-title">Good Morning!</h2>
+                    <p id="card-subtitle">Ready to continue your adventure?</p>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="password">Password</label>
-                <div class="input-container password-box">
-                    <input type="password" id="password" placeholder="••••••••••••" spellcheck="false" required>
-                    <button type="button" id="toggle-password" class="password-toggle" aria-label="Show password">
-                        <svg class="eye-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                    </button>
-                    <span class="focus-ring"></span>
+                <div class="field-box">
+                    <label for="username">Username</label>
+                    <div class="input-shell">
+                        <input type="text" id="username" placeholder="heroic_adventurer" spellcheck="false" required>
+                    </div>
                 </div>
-            </div>
 
-            <button type="submit" class="submit-btn" id="submit-btn">
-                <span>Sign In</span>
-            </button>
-        </form>
+                <div class="field-box">
+                    <label for="password">Password</label>
+                    <div class="input-shell password-shell">
+                        <input type="password" id="password" placeholder="••••••••••••" spellcheck="false" required>
+                        <button type="button" id="toggle-password" class="password-toggle-btn" aria-label="Toggle password visibility">
+                            <!-- Animated Eye SVG Icon -->
+                            <svg class="eye-svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path class="eye-lid-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle class="eye-ball-path" cx="12" cy="12" r="3"></circle>
+                                <line class="eye-slash" x1="2" y1="2" x2="22" y2="22"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="action-btn" id="action-btn">Enter Realm</button>
+            </form>
+        </div>
     </main>
 
-    <!-- Hidden helper span to measure caret position dynamically -->
-    <span id="text-width-calculator" class="text-measurer"></span>
+    <!-- Hidden measuring span for exact caret tracking -->
+    <span id="caret-measurer" class="measurer-probe"></span>
 
     <script src="script.js"></script>
 </body>

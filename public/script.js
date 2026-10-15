@@ -1,170 +1,194 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // DOM Elements
+    // Selectors
     const html = document.documentElement;
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const avatar = document.getElementById('avatar');
-    const leftEye = document.getElementById('eye-left');
-    const rightEye = document.getElementById('eye-right');
-    const leftIris = leftEye.querySelector('.iris');
-    const rightIris = rightEye.querySelector('.iris');
+    const themeBtn = document.getElementById('theme-toggle');
+    const kindChar = document.getElementById('kind-char');
+    const vampChar = document.getElementById('vamp-char');
+    
+    // Irises
+    const kindIrisL = document.getElementById('kind-iris-l');
+    const kindIrisR = document.getElementById('kind-iris-r');
+    const vampIrisL = document.getElementById('vamp-iris-l');
+    const vampIrisR = document.getElementById('vamp-iris-r');
+
+    // Form inputs & UI elements
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
     const togglePasswordBtn = document.getElementById('toggle-password');
-    const textMeasurer = document.getElementById('text-width-calculator');
-    const titleText = document.getElementById('title-text');
-    const subtitleText = document.getElementById('subtitle-text');
+    const caretMeasurer = document.getElementById('caret-measurer');
+    const cardTitle = document.getElementById('card-title');
+    const cardSubtitle = document.getElementById('card-subtitle');
+    const actionBtn = document.getElementById('action-btn');
 
     let isTyping = false;
-    let eyesShut = false;
+    let isEyesCovered = false;
 
     // ----------------------------------------------------
-    // 1. THEME SWITCHING (KIND <-> VILLAIN)
+    // 1. SIMPLE THEME TOGGLE ("Light" / "Dark")
     // ----------------------------------------------------
-    themeToggleBtn.addEventListener('click', () => {
-        const isDark = html.getAttribute('data-theme') === 'dark';
-        if (isDark) {
+    themeBtn.addEventListener('click', () => {
+        const isCurrentlyDark = html.getAttribute('data-theme') === 'dark';
+
+        if (isCurrentlyDark) {
             html.setAttribute('data-theme', 'light');
-            themeToggleBtn.querySelector('.icon').textContent = '☀️';
-            themeToggleBtn.querySelector('.label').textContent = 'Switch to Villain';
-            titleText.textContent = 'Welcome Back';
-            subtitleText.textContent = 'Enter your credentials to continue';
+            themeBtn.textContent = 'Dark';
+            cardTitle.textContent = 'Good Morning!';
+            cardSubtitle.textContent = 'Ready to continue your adventure?';
+            actionBtn.textContent = 'Enter Realm';
         } else {
             html.setAttribute('data-theme', 'dark');
-            themeToggleBtn.querySelector('.icon').textContent = '🌙';
-            themeToggleBtn.querySelector('.label').textContent = 'Switch to Guardian';
-            titleText.textContent = 'Access the Vault';
-            subtitleText.textContent = 'Identify yourself or be purged';
+            themeBtn.textContent = 'Light';
+            cardTitle.textContent = 'Midnight Vault';
+            cardSubtitle.textContent = 'Speak the incantation, mortal...';
+            actionBtn.textContent = 'Surrender Soul';
         }
-        updateCuriosityClass();
+
+        // Maintain active curiosity state if currently typing
+        refreshStateAnimations();
     });
 
     // ----------------------------------------------------
-    // 2. MATHEMATICAL PUPIL / IRIS POSITIONING
+    // 2. MATHEMATICAL PUPIL TARGETING ENGINE
     // ----------------------------------------------------
-    function setEyeTarget(targetX, targetY) {
-        if (eyesShut) return;
+    function getActiveCharacter() {
+        return html.getAttribute('data-theme') === 'dark' ? vampChar : kindChar;
+    }
 
-        [ { eye: leftEye, iris: leftIris }, { eye: rightEye, iris: rightIris } ].forEach(({ eye, iris }) => {
-            const rect = eye.getBoundingClientRect();
-            const eyeCenterX = rect.left + rect.width / 2;
-            const eyeCenterY = rect.top + rect.height / 2;
+    function moveIrisesToTarget(screenTargetX, screenTargetY) {
+        if (isEyesCovered) return;
 
-            const deltaX = targetX - eyeCenterX;
-            const deltaY = targetY - eyeCenterY;
+        const isDark = html.getAttribute('data-theme') === 'dark';
+        const pairs = isDark 
+            ? [ { iris: vampIrisL, centerRelX: 128, centerRelY: 163 }, { iris: vampIrisR, centerRelX: 192, centerRelY: 163 } ]
+            : [ { iris: kindIrisL, centerRelX: 130, centerRelY: 164 }, { iris: kindIrisR, centerRelX: 190, centerRelY: 164 } ];
+
+        const charSvg = isDark ? vampChar : kindChar;
+        const svgRect = charSvg.getBoundingClientRect();
+        const scale = svgRect.width / 320; // SVG viewBox ratio
+
+        pairs.forEach(({ iris, centerRelX, centerRelY }) => {
+            const eyeScreenX = svgRect.left + (centerRelX * scale);
+            const eyeScreenY = svgRect.top + (centerRelY * scale);
+
+            const deltaX = screenTargetX - eyeScreenX;
+            const deltaY = screenTargetY - eyeScreenY;
             const angle = Math.atan2(deltaY, deltaX);
 
-            // Maximum iris travel distance (bounds check)
-            const maxRadius = (rect.width - iris.offsetWidth) / 1.7;
-            const distance = Math.min(Math.hypot(deltaX, deltaY), maxRadius);
+            // Maximum radius the pupil can explore
+            const maxRadius = 6.5; 
+            const distance = Math.min(Math.hypot(deltaX, deltaY) / 18, maxRadius);
 
-            const moveX = Math.cos(angle) * distance;
-            const moveY = Math.sin(angle) * distance;
+            const transX = Math.cos(angle) * distance;
+            const transY = Math.sin(angle) * distance;
 
-            iris.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            iris.style.transform = `translate(${transX}px, ${transY}px)`;
         });
     }
 
     // ----------------------------------------------------
-    // 3. CURSOR TRACKING (IDLE / DEFAULT MODE)
+    // 3. IDLE CURSOR TRACKING
     // ----------------------------------------------------
     window.addEventListener('mousemove', (e) => {
-        // Cursor tracking only takes place when the user is NOT actively typing
-        if (isTyping || eyesShut) return;
-        setEyeTarget(e.clientX, e.clientY);
+        if (isTyping || isEyesCovered) return;
+        moveIrisesToTarget(e.clientX, e.clientY);
     });
 
     // ----------------------------------------------------
-    // 4. KEYSTROKE & DIGIT TRACKING ENGINE
+    // 4. PRECISE CARET / LAST-TYPED-DIGIT TRACKING
     // ----------------------------------------------------
-    function updateCuriosityClass() {
-        avatar.classList.remove('curious-kind', 'curious-villain');
-        if (!isTyping || eyesShut) return;
-
-        const currentTheme = html.getAttribute('data-theme');
-        if (currentTheme === 'dark') {
-            avatar.classList.add('curious-villain');
-        } else {
-            avatar.classList.add('curious-kind');
-        }
-    }
-
-    function calculateCaretScreenPosition(inputElement) {
+    function calculateInputCaretScreenCoords(inputElement) {
         const inputRect = inputElement.getBoundingClientRect();
-
-        // Copy font styles to matching measurer span
         const style = window.getComputedStyle(inputElement);
-        textMeasurer.style.font = style.font;
-        textMeasurer.style.letterSpacing = style.letterSpacing;
-        textMeasurer.textContent = inputElement.value || '';
 
-        // Measured text width plus input left padding
-        const textWidth = textMeasurer.getBoundingClientRect().width;
-        const paddingLeft = parseFloat(style.paddingLeft) || 16;
+        caretMeasurer.style.font = style.font;
+        caretMeasurer.style.letterSpacing = style.letterSpacing;
+        caretMeasurer.textContent = inputElement.value || '';
 
-        // Caret coordinate on screen
+        const measuredTextWidth = caretMeasurer.getBoundingClientRect().width;
+        const paddingLeft = parseFloat(style.paddingLeft) || 18;
+
         const caretX = Math.min(
-            inputRect.left + paddingLeft + textWidth,
-            inputRect.right - 20
+            inputRect.left + paddingLeft + measuredTextWidth,
+            inputRect.right - 25
         );
-        const caretY = inputRect.top + inputRect.height / 2;
+        const caretY = inputRect.top + (inputRect.height / 2);
 
         return { x: caretX, y: caretY };
     }
 
-    function handleTyping(event) {
-        const inputElement = event.target;
-        if (inputElement.value.length > 0) {
-            isTyping = true;
-            updateCuriosityClass();
-            const caretPos = calculateCaretScreenPosition(inputElement);
-            setEyeTarget(caretPos.x, caretPos.y);
-        } else {
-            isTyping = false;
-            updateCuriosityClass();
+    function refreshStateAnimations() {
+        const isDark = html.getAttribute('data-theme') === 'dark';
+
+        // Clear all states
+        kindChar.classList.remove('curious-kind', 'eyes-covered-kind');
+        vampChar.classList.remove('curious-vamp', 'eyes-covered-vamp');
+
+        if (isEyesCovered) {
+            if (isDark) vampChar.classList.add('eyes-covered-vamp');
+            else kindChar.classList.add('eyes-covered-kind');
+            return;
+        }
+
+        if (isTyping) {
+            if (isDark) vampChar.classList.add('curious-vamp');
+            else kindChar.classList.add('curious-kind');
         }
     }
 
-    [usernameInput, passwordInput].forEach((input) => {
-        input.addEventListener('input', handleTyping);
-        input.addEventListener('focus', (e) => {
+    function handleTypingEvent(e) {
+        const input = e.target;
+        if (input.value.length > 0) {
+            isTyping = true;
+            refreshStateAnimations();
+            const caretCoords = calculateInputCaretScreenCoords(input);
+            moveIrisesToTarget(caretCoords.x, caretCoords.y);
+        } else {
+            isTyping = false;
+            refreshStateAnimations();
+        }
+    }
+
+    [usernameInput, passwordInput].forEach(field => {
+        field.addEventListener('input', handleTypingEvent);
+        field.addEventListener('focus', (e) => {
             if (e.target.value.length > 0) {
                 isTyping = true;
-                updateCuriosityClass();
-                const caretPos = calculateCaretScreenPosition(e.target);
-                setEyeTarget(caretPos.x, caretPos.y);
+                refreshStateAnimations();
+                const coords = calculateInputCaretScreenCoords(e.target);
+                moveIrisesToTarget(coords.x, coords.y);
             }
         });
-        input.addEventListener('blur', () => {
+        field.addEventListener('blur', () => {
             isTyping = false;
-            updateCuriosityClass();
+            refreshStateAnimations();
         });
     });
 
     // ----------------------------------------------------
-    // 5. PASSWORD VISIBILITY & EYE CLOSING
+    // 5. SHOW PASSWORD -> COVER EYES WITH HANDS & LEAN
     // ----------------------------------------------------
     togglePasswordBtn.addEventListener('click', () => {
-        const isCurrentlyPassword = passwordInput.type === 'password';
+        const isPasswordHidden = passwordInput.type === 'password';
 
-        if (isCurrentlyPassword) {
-            // Reveal password -> Character politely or smugly shuts eyes
+        if (isPasswordHidden) {
+            // SHOW PASSWORD: Reveal text, both characters cover their eyes and lean away
             passwordInput.type = 'text';
-            eyesShut = true;
-            avatar.classList.add('eyes-closed');
-            avatar.classList.remove('curious-kind', 'curious-villain');
-            togglePasswordBtn.setAttribute('aria-label', 'Hide password');
+            isEyesCovered = true;
+            togglePasswordBtn.classList.add('active');
+            refreshStateAnimations();
         } else {
-            // Hide password -> Character opens eyes back up
+            // HIDE PASSWORD: Mask text, characters uncover eyes and return to normal
             passwordInput.type = 'password';
-            eyesShut = false;
-            avatar.classList.remove('eyes-closed');
-            togglePasswordBtn.setAttribute('aria-label', 'Show password');
+            isEyesCovered = false;
+            togglePasswordBtn.classList.remove('active');
+            refreshStateAnimations();
 
+            // If user is currently focused in input, re-track caret
             if (document.activeElement === passwordInput && passwordInput.value.length > 0) {
                 isTyping = true;
-                updateCuriosityClass();
-                const caretPos = calculateCaretScreenPosition(passwordInput);
-                setEyeTarget(caretPos.x, caretPos.y);
+                refreshStateAnimations();
+                const coords = calculateInputCaretScreenCoords(passwordInput);
+                moveIrisesToTarget(coords.x, coords.y);
             }
         }
     });
