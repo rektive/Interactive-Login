@@ -1,45 +1,142 @@
-<!-- public/index.html -->
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Login</title>
+    <title>Interactive Portfolio Login</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <button id="theme-toggle" class="theme-btn">Switch to Dark Theme</button>
+    <!-- Immersive Background Scenery -->
+    <div class="scenery-container">
+        <!-- Mountain Scenery (Light / Kind) -->
+        <div class="scenery scenery-light">
+            <div class="sun"></div>
+            <div class="mountain mountain-back"></div>
+            <div class="mountain mountain-mid"></div>
+            <div class="mountain mountain-fore"></div>
+            <div class="fog"></div>
+        </div>
 
-    <div class="login-container">
-        <!-- The Animated Character -->
-        <div class="character" id="character">
-            <div class="eyebrow left-eyebrow"></div>
-            <div class="eyebrow right-eyebrow"></div>
-            <div class="eye left-eye">
-                <div class="pupil"></div>
-            </div>
-            <div class="eye right-eye">
-                <div class="pupil"></div>
+        <!-- Volcanic / Storm Scenery (Dark / Villain) -->
+        <div class="scenery scenery-dark">
+            <div class="blood-moon"></div>
+            <div class="dark-crags crag-back"></div>
+            <div class="dark-crags crag-fore"></div>
+            <div class="ambient-glow"></div>
+            <div class="embers"></div>
+        </div>
+    </div>
+
+    <!-- Theme Switcher Button -->
+    <button id="theme-toggle" class="theme-switch-btn" aria-label="Toggle theme">
+        <span class="icon">☀️</span>
+        <span class="label">Switch to Villain</span>
+    </button>
+
+    <!-- Main Card Container -->
+    <main class="login-wrapper">
+        <!-- Human Avatar Stage -->
+        <div class="avatar-stage">
+            <div class="human-avatar" id="avatar">
+                <!-- Hair Background Layer -->
+                <div class="hair-back"></div>
+
+                <!-- Ears -->
+                <div class="ear ear-left"></div>
+                <div class="ear ear-right"></div>
+
+                <!-- Face Base -->
+                <div class="face">
+                    <!-- Eyebrows -->
+                    <div class="eyebrows">
+                        <div class="eyebrow eyebrow-left"></div>
+                        <div class="eyebrow eyebrow-right"></div>
+                    </div>
+
+                    <!-- Eyes Container -->
+                    <div class="eyes-container">
+                        <div class="eye eye-left" id="eye-left">
+                            <div class="eyelid eyelid-top"></div>
+                            <div class="sclera">
+                                <div class="iris">
+                                    <div class="pupil"></div>
+                                    <div class="glint glint-1"></div>
+                                    <div class="glint glint-2"></div>
+                                </div>
+                            </div>
+                            <div class="eyelid eyelid-bottom"></div>
+                        </div>
+
+                        <div class="eye eye-right" id="eye-right">
+                            <div class="eyelid eyelid-top"></div>
+                            <div class="sclera">
+                                <div class="iris">
+                                    <div class="pupil"></div>
+                                    <div class="glint glint-1"></div>
+                                    <div class="glint glint-2"></div>
+                                </div>
+                            </div>
+                            <div class="eyelid eyelid-bottom"></div>
+                        </div>
+                    </div>
+
+                    <!-- Nose -->
+                    <div class="nose"></div>
+
+                    <!-- Cheeks (Kind Blush / Villain Shadow) -->
+                    <div class="cheek-tone cheek-left"></div>
+                    <div class="cheek-tone cheek-right"></div>
+
+                    <!-- Dynamic Mouth -->
+                    <div class="mouth" id="mouth"></div>
+                </div>
+
+                <!-- Hair Foreground Layer -->
+                <div class="hair-front"></div>
             </div>
         </div>
 
-        <!-- Login Form -->
-        <form id="login-form">
-            <h2>Welcome Back</h2>
-            <div class="input-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" placeholder="Enter your username" autocomplete="off">
-            </div>
-            <div class="input-group">
-                <label for="password">Password</label>
-                <div class="password-wrapper">
-                    <input type="password" id="password" placeholder="Enter your password">
-                    <button type="button" id="toggle-password" class="eye-btn">👁️</button>
+        <!-- Glassmorphism Login Form -->
+        <form class="glass-form" id="login-form" autocomplete="off" onsubmit="event.preventDefault();">
+            <header class="form-header">
+                <h1 id="title-text">Welcome Back</h1>
+                <p id="subtitle-text">Enter your credentials to continue</p>
+            </header>
+
+            <div class="form-group">
+                <label for="username">Username or Email</label>
+                <div class="input-container">
+                    <input type="text" id="username" placeholder="alex.mercer@example.com" spellcheck="false" required>
+                    <span class="focus-ring"></span>
                 </div>
             </div>
-            <button type="submit" class="login-btn">Login</button>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-container password-box">
+                    <input type="password" id="password" placeholder="••••••••••••" spellcheck="false" required>
+                    <button type="button" id="toggle-password" class="password-toggle" aria-label="Show password">
+                        <svg class="eye-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                    <span class="focus-ring"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submit-btn">
+                <span>Sign In</span>
+            </button>
         </form>
-    </div>
+    </main>
+
+    <!-- Hidden helper span to measure caret position dynamically -->
+    <span id="text-width-calculator" class="text-measurer"></span>
 
     <script src="script.js"></script>
 </body>
