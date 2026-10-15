@@ -1,0 +1,46 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <button id="theme-toggle" class="theme-btn">Switch to Dark Theme</button>
+
+    <div class="login-container">
+        <!-- The Animated Character -->
+        <div class="character" id="character">
+            <div class="eyebrow left-eyebrow"></div>
+            <div class="eyebrow right-eyebrow"></div>
+            <div class="eye left-eye">
+                <div class="pupil"></div>
+            </div>
+            <div class="eye right-eye">
+                <div class="pupil"></div>
+            </div>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form">
+            <h2>Welcome Back</h2>
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter your username" autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="password" placeholder="Enter your password">
+                    <button type="button" id="toggle-password" class="eye-btn">👁️</button>
+                </div>
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
