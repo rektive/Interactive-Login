@@ -2,10 +2,10 @@
    DESIGN SYSTEM & VARIABLES
    ======================================================== */
 :root {
-    /* KIND THEME (Light / Cartoon Sky Haven) */
     --font-heading: 'Fredoka', cursive, sans-serif;
     --font-body: 'Plus Jakarta Sans', sans-serif;
 
+    /* KIND THEME (Light / Cartoon Sky Haven) */
     --bg-sky: linear-gradient(180deg, #6ee7b7 0%, #93c5fd 40%, #e0e7ff 100%);
     --card-surface: rgba(255, 255, 255, 0.88);
     --card-border: rgba(255, 255, 255, 0.95);
@@ -20,7 +20,6 @@
 
     --scene-light-opacity: 1;
     --scene-dark-opacity: 0;
-
     --kind-display: block;
     --vamp-display: none;
 }
@@ -41,7 +40,6 @@
 
     --scene-light-opacity: 0;
     --scene-dark-opacity: 1;
-
     --kind-display: none;
     --vamp-display: block;
 }
@@ -149,19 +147,67 @@ body {
     background: linear-gradient(0deg, rgba(185, 28, 28, 0.3) 0%, rgba(0,0,0,0) 100%);
 }
 
-.bats-flock .bat {
+/* ========================================================
+   VECTOR SVG BATS (Clean & Animated Flapping Wings)
+   ======================================================== */
+.bats-container {
     position: absolute;
-    font-size: 1.6rem;
-    animation: batFly 14s infinite linear;
+    inset: 0;
+    pointer-events: none;
 }
-.bat.b1 { top: 18%; animation-delay: 0s; }
-.bat.b2 { top: 26%; animation-delay: 4.5s; }
-.bat.b3 { top: 12%; animation-delay: 8s; }
 
-@keyframes batFly {
-    0% { transform: translateX(-10vw) translateY(0) scale(0.7); }
-    50% { transform: translateX(50vw) translateY(-40px) scale(1.1); }
-    100% { transform: translateX(110vw) translateY(20px) scale(0.6); }
+.svg-bat {
+    position: absolute;
+    width: 48px;
+    height: 28px;
+    filter: drop-shadow(0 0 6px rgba(220, 38, 38, 0.4));
+}
+
+.svg-bat .wing-left {
+    transform-origin: 32px 18px;
+    animation: flapLeft 0.28s infinite alternate ease-in-out;
+}
+.svg-bat .wing-right {
+    transform-origin: 32px 18px;
+    animation: flapRight 0.28s infinite alternate ease-in-out;
+}
+
+@keyframes flapLeft {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-32deg); }
+}
+@keyframes flapRight {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(32deg); }
+}
+
+.bat-1 {
+    top: 18%;
+    animation: batTraverse1 16s infinite linear;
+}
+.bat-2 {
+    top: 26%;
+    animation: batTraverse2 12s infinite linear 3s;
+}
+.bat-3 {
+    top: 10%;
+    animation: batTraverse3 20s infinite linear 7s;
+}
+
+@keyframes batTraverse1 {
+    0% { transform: translateX(-15vw) translateY(0) scale(0.75); }
+    50% { transform: translateX(50vw) translateY(-40px) scale(1.05); }
+    100% { transform: translateX(115vw) translateY(15px) scale(0.7); }
+}
+@keyframes batTraverse2 {
+    0% { transform: translateX(115vw) translateY(0) scaleX(-1) scale(0.65); }
+    50% { transform: translateX(45vw) translateY(30px) scaleX(-1) scale(0.9); }
+    100% { transform: translateX(-15vw) translateY(-10px) scaleX(-1) scale(0.6); }
+}
+@keyframes batTraverse3 {
+    0% { transform: translateX(-15vw) translateY(10px) scale(0.55); }
+    50% { transform: translateX(60vw) translateY(-25px) scale(0.85); }
+    100% { transform: translateX(115vw) translateY(0px) scale(0.5); }
 }
 
 /* ========================================================
@@ -223,14 +269,14 @@ body {
 #kind-char { display: var(--kind-display); }
 #vamp-char { display: var(--vamp-display); }
 
-/* Rig Components */
 .head-group {
     transform-origin: 160px 220px;
-    transition: transform 0.4s cubic-bezier(0.34, 1.25, 0.64, 1);
+    transition: transform 0.35s cubic-bezier(0.34, 1.25, 0.64, 1);
 }
 
 .halo {
     animation: floatHalo 3s ease-in-out infinite alternate;
+    transition: filter 0.3s ease, stroke 0.3s ease;
 }
 @keyframes floatHalo {
     0% { transform: translateY(0); }
@@ -241,11 +287,12 @@ body {
     transition: transform 0.08s ease-out;
 }
 
-.brow {
-    transition: transform 0.35s ease;
+/* VAMPIRE EYEBROW STYLING & MOTION */
+.vamp-brow {
+    transform-origin: 160px 144px;
+    transition: transform 0.25s ease-out, stroke 0.25s ease;
 }
 
-/* HANDS COVER RIG (Hidden below shoulders initially) */
 .hands-cover-rig {
     opacity: 0;
     transform: translateY(120px) scale(0.8);
@@ -256,10 +303,8 @@ body {
 }
 
 /* ========================================================
-   HIGH-TIER PERSONALITY ANIMATIONS
+   EXPRESSION STATES: TYPING CURIOSITY
    ======================================================== */
-
-/* 1. CURIOUS TYPING STATE - KIND */
 .char-svg.curious-kind {
     transform: translateY(12px) scale(1.04);
 }
@@ -269,30 +314,23 @@ body {
 .char-svg.curious-kind .brow-left {
     transform: translateY(-8px) rotate(-6deg);
 }
-.char-svg.curious-kind #kind-mouth {
-    d: path("M150,210 A10,10 0 1 0 170,210"); /* Cute open "O" mouth */
-}
 
-/* 2. CURIOUS TYPING STATE - VAMPIRE */
 .char-svg.curious-vamp {
-    transform: translateY(16px) scale(1.06);
+    transform: translateY(14px) scale(1.05);
 }
 .char-svg.curious-vamp .head-group {
-    transform: rotate(-5deg) translateY(6px);
+    transform: rotate(-4deg) translateY(5px);
 }
-.char-svg.curious-vamp .brow-left {
-    transform: translateY(5px) rotate(16deg);
+.char-svg.curious-vamp .vamp-brow.brow-left {
+    transform: translateY(4px) rotate(8deg);
 }
-.char-svg.curious-vamp .brow-right {
-    transform: translateY(5px) rotate(-16deg);
-}
-.char-svg.curious-vamp #vamp-mouth .mouth {
-    d: path("M138,212 Q160,228 182,212"); /* Predatory smirk */
+.char-svg.curious-vamp .vamp-brow.brow-right {
+    transform: translateY(4px) rotate(-8deg);
 }
 
-/* 3. SHOW PASSWORD: EXPENSIVE "COVER EYES & LEAN" ANIMATIONS */
-
-/* Kind Character: Blushes deep pink, recoils bashfully backward, covers eyes */
+/* ========================================================
+   SHOW PASSWORD: COVER EYES + LEAN RECOIL
+   ======================================================== */
 .char-svg.eyes-covered-kind {
     transform: translateY(-16px) scale(0.96) rotate(-4deg);
 }
@@ -308,20 +346,78 @@ body {
     transform: translateY(0) scale(1);
 }
 
-/* Vampire Character: Arches back dramatically, hisses in mock theatrical disgust, claws clamp eyes */
 .char-svg.eyes-covered-vamp {
     transform: translateY(-24px) scale(0.94) rotate(6deg);
 }
 .char-svg.eyes-covered-vamp .head-group {
     transform: rotate(-8deg) translateY(-12px);
 }
-.char-svg.eyes-covered-vamp .vamp-collar {
-    transform: scale(1.06);
-    transform-origin: center bottom;
+.char-svg.eyes-covered-vamp .vamp-brow.brow-left {
+    transform: translateY(-4px) rotate(-10deg);
+}
+.char-svg.eyes-covered-vamp .vamp-brow.brow-right {
+    transform: translateY(-4px) rotate(10deg);
 }
 .char-svg.eyes-covered-vamp #vamp-hands {
     opacity: 1;
     transform: translateY(0) scale(1);
+}
+
+/* ========================================================
+   PROXIMITY ANIMATIONS (CURSOR TOO CLOSE TO HEAD)
+   ======================================================== */
+
+/* 1. VAMPIRE: Lunge, snap, and bite at cursor! */
+.char-svg.vampire-lunge {
+    transform: translateY(-12px) scale(1.15) !important;
+    filter: drop-shadow(0 0 16px rgba(220, 38, 38, 0.65));
+}
+.char-svg.vampire-lunge .head-group {
+    transform: translateY(-8px) scale(1.08) !important;
+}
+.char-svg.vampire-lunge .vamp-collar {
+    transform: scale(1.12);
+    transform-origin: center bottom;
+}
+.char-svg.vampire-lunge .vamp-brow.brow-left {
+    transform: translateY(6px) rotate(16deg) !important;
+}
+.char-svg.vampire-lunge .vamp-brow.brow-right {
+    transform: translateY(6px) rotate(-16deg) !important;
+}
+.char-svg.vampire-lunge .vamp-mouth-line,
+.char-svg.vampire-lunge .fang {
+    display: none;
+}
+.char-svg.vampire-lunge #vamp-bite-maw {
+    display: block !important;
+    animation: jawSnap 0.22s ease-in-out infinite alternate;
+}
+@keyframes jawSnap {
+    0% { transform: scale(0.95); }
+    100% { transform: scale(1.12); }
+}
+
+/* 2. KIND GUARDIAN: Wholesome tilt, wink, and glowing halo! */
+.char-svg.kind-nuzzle {
+    transform: translateY(-8px) scale(1.08) !important;
+}
+.char-svg.kind-nuzzle .head-group {
+    transform: rotate(10deg) translateY(-6px) !important;
+}
+.char-svg.kind-nuzzle .halo {
+    filter: drop-shadow(0 0 12px #fde047) !important;
+    stroke: #ffffff !important;
+}
+.char-svg.kind-nuzzle .blush {
+    opacity: 1 !important;
+    rx: 16px !important;
+}
+.char-svg.kind-nuzzle .wink-lid {
+    display: block !important;
+}
+.char-svg.kind-nuzzle #kind-iris-r {
+    display: none;
 }
 
 /* ========================================================

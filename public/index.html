@@ -25,13 +25,27 @@
         <!-- Dark Theme: Gothic Transylvanian Castle Balcony at Midnight -->
         <div class="scene scene-dark">
             <div class="blood-moon"></div>
-            <div class="fog-banks"></div>
             <div class="gothic-spires"></div>
-            <div class="bats-flock">
-                <span class="bat b1">🦇</span>
-                <span class="bat b2">🦇</span>
-                <span class="bat b3">🦇</span>
+            
+            <!-- Real Animated Vector SVG Bats (No broken emoji boxes) -->
+            <div class="bats-container">
+                <svg class="svg-bat bat-1" viewBox="0 0 64 36">
+                    <path class="wing wing-left" d="M32,18 Q20,2 2,8 Q12,18 20,18 Q26,26 32,18 Z" fill="#09040d" />
+                    <path class="wing wing-right" d="M32,18 Q44,2 62,8 Q52,18 44,18 Q38,26 32,18 Z" fill="#09040d" />
+                    <ellipse cx="32" cy="18" rx="4" ry="7" fill="#000" />
+                </svg>
+                <svg class="svg-bat bat-2" viewBox="0 0 64 36">
+                    <path class="wing wing-left" d="M32,18 Q20,2 2,8 Q12,18 20,18 Q26,26 32,18 Z" fill="#09040d" />
+                    <path class="wing wing-right" d="M32,18 Q44,2 62,8 Q52,18 44,18 Q38,26 32,18 Z" fill="#09040d" />
+                    <ellipse cx="32" cy="18" rx="4" ry="7" fill="#000" />
+                </svg>
+                <svg class="svg-bat bat-3" viewBox="0 0 64 36">
+                    <path class="wing wing-left" d="M32,18 Q20,2 2,8 Q12,18 20,18 Q26,26 32,18 Z" fill="#09040d" />
+                    <path class="wing wing-right" d="M32,18 Q44,2 62,8 Q52,18 44,18 Q38,26 32,18 Z" fill="#09040d" />
+                    <ellipse cx="32" cy="18" rx="4" ry="7" fill="#000" />
+                </svg>
             </div>
+            
             <div class="crimson-fog"></div>
         </div>
     </div>
@@ -43,6 +57,7 @@
     <main class="stage-container">
         <!-- SVG CARTOON CHARACTER RIG -->
         <div class="character-rig" id="character-rig">
+            
             <!-- 1. CELESTIAL SUN GUARDIAN (KIND) -->
             <svg class="char-svg" id="kind-char" viewBox="0 0 320 340">
                 <defs>
@@ -61,30 +76,23 @@
                 </defs>
 
                 <!-- Floating Halo -->
-                <ellipse class="halo" cx="160" cy="45" rx="55" ry="14" fill="none" stroke="#fde047" stroke-width="6" opacity="0.9" />
+                <ellipse class="halo" id="kind-halo" cx="160" cy="45" rx="55" ry="14" fill="none" stroke="#fde047" stroke-width="6" opacity="0.9" />
 
                 <!-- Torso & Shoulders -->
                 <g class="torso-group">
                     <path d="M70,340 Q160,250 250,340 Z" fill="url(#kind-tunic)" />
-                    <!-- Golden Armor Mantle -->
                     <path d="M100,280 Q160,320 220,280 L235,340 L85,340 Z" fill="#fbbf24" />
-                    <!-- Neck -->
                     <rect x="144" y="220" width="32" height="35" rx="10" fill="url(#kind-skin)" />
                 </g>
 
                 <!-- Animated Head Rig -->
                 <g class="head-group" id="kind-head">
-                    <!-- Hair Back -->
                     <path d="M95,160 Q80,70 160,65 Q240,70 225,160 Z" fill="url(#kind-hair)" />
-                    <!-- Ears -->
                     <ellipse cx="98" cy="175" rx="10" ry="14" fill="#fca5a5" />
                     <ellipse cx="222" cy="175" rx="10" ry="14" fill="#fca5a5" />
-                    <!-- Face Shape -->
                     <path d="M105,140 Q100,240 160,245 Q220,240 215,140 Q215,95 160,95 Q105,95 105,140 Z" fill="url(#kind-skin)" />
-                    <!-- Rosy Cheeks -->
                     <ellipse class="blush" cx="122" cy="195" rx="12" ry="7" fill="#fb7185" opacity="0.6" />
                     <ellipse class="blush" cx="198" cy="195" rx="12" ry="7" fill="#fb7185" opacity="0.6" />
-                    <!-- Cute Button Nose -->
                     <path d="M156,180 Q160,185 164,180" stroke="#f43f5e" stroke-width="3" fill="none" stroke-linecap="round" />
                     
                     <!-- Eyebrows -->
@@ -104,6 +112,8 @@
                     </g>
                     <g class="eye-socket eye-right" transform="translate(176, 150)">
                         <ellipse cx="14" cy="14" rx="14" ry="14" fill="#ffffff" />
+                        <!-- Winking eyelid overlay for kind proximity interaction -->
+                        <path class="wink-lid" d="M0,14 Q14,24 28,14" stroke="#475569" stroke-width="3.5" fill="none" stroke-linecap="round" style="display:none;" />
                         <g class="iris-pupil" id="kind-iris-r">
                             <circle cx="14" cy="14" r="8" fill="#0284c7" />
                             <circle cx="14" cy="14" r="4.5" fill="#0f172a" />
@@ -111,20 +121,16 @@
                         </g>
                     </g>
 
-                    <!-- Smiling Cartoon Mouth -->
                     <path class="mouth" id="kind-mouth" d="M142,212 Q160,226 178,212" stroke="#e11d48" stroke-width="4" stroke-linecap="round" fill="none" />
-                    <!-- Fluffy Front Hair Tufts -->
                     <path d="M102,130 Q140,85 170,120 Q190,95 218,125 Q205,100 160,95 Q115,100 102,130 Z" fill="url(#kind-hair)" />
                 </g>
 
-                <!-- Rigged Arms & Hands (Hidden by default, swoops up to cover eyes) -->
+                <!-- Rigged Hands -->
                 <g class="hands-cover-rig" id="kind-hands">
-                    <!-- Left Arm/Hand -->
                     <g class="arm-left">
                         <path d="M50,340 C60,250 110,210 135,165" stroke="#38bdf8" stroke-width="26" stroke-linecap="round" fill="none" />
                         <ellipse cx="132" cy="162" rx="19" ry="15" fill="#ffffff" stroke="#e0f2fe" stroke-width="3" transform="rotate(-15 132 162)" />
                     </g>
-                    <!-- Right Arm/Hand -->
                     <g class="arm-right">
                         <path d="M270,340 C260,250 210,210 185,165" stroke="#38bdf8" stroke-width="26" stroke-linecap="round" fill="none" />
                         <ellipse cx="188" cy="162" rx="19" ry="15" fill="#ffffff" stroke="#e0f2fe" stroke-width="3" transform="rotate(15 188 162)" />
@@ -136,8 +142,8 @@
             <svg class="char-svg" id="vamp-char" viewBox="0 0 320 340">
                 <defs>
                     <linearGradient id="vamp-skin" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="#e2e8f0"/>
-                        <stop offset="100%" stop-color="#94a3b8"/>
+                        <stop offset="0%" stop-color="#f1f5f9"/>
+                        <stop offset="100%" stop-color="#cbd5e1"/>
                     </linearGradient>
                     <linearGradient id="vamp-cape-inside" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="0%" stop-color="#dc2626"/>
@@ -146,37 +152,32 @@
                 </defs>
 
                 <!-- High Dracula Gothic Collar -->
-                <path class="vamp-collar" d="M60,340 L100,160 L140,230 L160,240 L180,230 L220,160 L260,340 Z" fill="url(#vamp-cape-inside)" stroke="#991b1b" stroke-width="3" />
+                <path class="vamp-collar" d="M55,340 L88,155 L132,225 L160,235 L188,225 L232,155 L265,340 Z" fill="url(#vamp-cape-inside)" stroke="#991b1b" stroke-width="3" />
 
                 <!-- Torso / Tuxedo -->
                 <g class="torso-group">
                     <path d="M70,340 Q160,270 250,340 Z" fill="#0f0d14" />
-                    <!-- Crimson Ascot & Medallion -->
                     <path d="M145,260 L175,260 L168,310 L160,320 L152,310 Z" fill="#b91c1c" />
                     <circle cx="160" cy="275" r="7" fill="#fbbf24" stroke="#78350f" stroke-width="2" />
-                    <!-- Pale Aristocrat Neck -->
                     <rect x="146" y="215" width="28" height="40" rx="6" fill="url(#vamp-skin)" />
                 </g>
 
                 <!-- Animated Head Rig -->
                 <g class="head-group" id="vamp-head">
-                    <!-- Slicked Widow's Peak Hair Back -->
                     <path d="M92,150 Q85,55 160,50 Q235,55 228,150 Z" fill="#09050d" />
-                    <!-- Pointed Nosferatu Ears -->
-                    <polygon points="94,175 75,150 98,160" fill="#cbd5e1" stroke="#64748b" stroke-width="2" />
-                    <polygon points="226,175 245,150 222,160" fill="#cbd5e1" stroke="#64748b" stroke-width="2" />
-                    <!-- Angular Jaw -->
+                    <polygon points="94,175 72,150 98,160" fill="#cbd5e1" stroke="#64748b" stroke-width="2" />
+                    <polygon points="226,175 248,150 222,160" fill="#cbd5e1" stroke="#64748b" stroke-width="2" />
                     <path d="M102,130 L106,180 L160,245 L214,180 L218,130 Q218,85 160,85 Q102,85 102,130 Z" fill="url(#vamp-skin)" />
-                    <!-- Sharp Cheek Contours -->
-                    <path d="M112,185 L125,198" stroke="#64748b" stroke-width="2.5" stroke-linecap="round" />
-                    <path d="M208,185 L195,198" stroke="#64748b" stroke-width="2.5" stroke-linecap="round" />
-                    <!-- Sharp Aquiline Nose -->
-                    <polygon points="160,165 153,190 162,188" fill="#64748b" />
+                    <path d="M114,186 L124,196" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" />
+                    <path d="M206,186 L196,196" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" />
+                    <polygon points="160,165 154,190 163,188" fill="#64748b" />
 
-                    <!-- Wicked Slanted Eyebrows -->
-                    <g class="eyebrows">
-                        <path class="brow brow-left" d="M112,142 Q130,128 148,146" stroke="#000000" stroke-width="5" stroke-linecap="round" fill="none" />
-                        <path class="brow brow-right" d="M172,146 Q190,128 208,142" stroke="#000000" stroke-width="5" stroke-linecap="round" fill="none" />
+                    <!-- RE-ENGINEERED EYEBROWS: Arched Villainous Geometry -->
+                    <g class="vamp-brows-layer">
+                        <!-- Left Eyebrow -->
+                        <path class="vamp-brow brow-left" id="vamp-brow-l" d="M110,146 Q128,124 148,142" stroke="#000" stroke-width="6" stroke-linecap="round" fill="none" />
+                        <!-- Right Eyebrow -->
+                        <path class="vamp-brow brow-right" id="vamp-brow-r" d="M172,142 Q192,124 210,146" stroke="#000" stroke-width="6" stroke-linecap="round" fill="none" />
                     </g>
 
                     <!-- Piercing Crimson Vampire Eyes -->
@@ -184,7 +185,7 @@
                         <ellipse cx="14" cy="13" rx="14" ry="10" fill="#1e1b2e" />
                         <g class="iris-pupil" id="vamp-iris-l">
                             <circle cx="14" cy="13" r="8" fill="#ef4444" />
-                            <ellipse cx="14" cy="13" rx="2.5" ry="6" fill="#450a0a" /> <!-- Slit pupil -->
+                            <ellipse cx="14" cy="13" rx="2.2" ry="6" fill="#2d0606" />
                             <circle cx="12" cy="10" r="1.5" fill="#fecaca" />
                         </g>
                     </g>
@@ -192,31 +193,40 @@
                         <ellipse cx="14" cy="13" rx="14" ry="10" fill="#1e1b2e" />
                         <g class="iris-pupil" id="vamp-iris-r">
                             <circle cx="14" cy="13" r="8" fill="#ef4444" />
-                            <ellipse cx="14" cy="13" rx="2.5" ry="6" fill="#450a0a" /> <!-- Slit pupil -->
+                            <ellipse cx="14" cy="13" rx="2.2" ry="6" fill="#2d0606" />
                             <circle cx="12" cy="10" r="1.5" fill="#fecaca" />
                         </g>
                     </g>
 
-                    <!-- Sneering Mouth with Fangs -->
-                    <g class="mouth-group" id="vamp-mouth">
-                        <path class="mouth" d="M142,216 Q160,210 178,214" stroke="#450a0a" stroke-width="3.5" stroke-linecap="round" fill="none" />
-                        <!-- Fangs -->
-                        <polygon class="fang fang-l" points="147,216 151,216 149,224" fill="#ffffff" />
-                        <polygon class="fang fang-r" points="171,215 175,215 173,223" fill="#ffffff" />
+                    <!-- Dynamic Vampire Jaw & Fangs -->
+                    <g class="mouth-group" id="vamp-mouth-rig">
+                        <!-- Normal closed smirk mouth -->
+                        <path class="vamp-mouth-line" d="M140,215 Q160,208 180,214" stroke="#450a0a" stroke-width="3.5" stroke-linecap="round" fill="none" />
+                        <polygon class="fang fang-l" points="146,215 150,215 148,223" fill="#ffffff" />
+                        <polygon class="fang fang-r" points="170,214 174,214 172,222" fill="#ffffff" />
+                        
+                        <!-- Open Biting Maw (revealed dynamically when cursor gets close) -->
+                        <g class="vamp-bite-maw" id="vamp-bite-maw" style="display:none;">
+                            <path d="M136,206 Q160,195 184,206 Q190,236 160,238 Q130,236 136,206 Z" fill="#260408" stroke="#7f1d1d" stroke-width="2"/>
+                            <!-- Upper Fangs -->
+                            <polygon points="144,204 150,204 147,218" fill="#fff" />
+                            <polygon points="170,204 176,204 173,218" fill="#fff" />
+                            <!-- Lower Fangs -->
+                            <polygon points="148,234 153,234 150,223" fill="#fff" />
+                            <polygon points="167,234 172,234 169,223" fill="#fff" />
+                        </g>
                     </g>
 
-                    <!-- Dracula Widow's Peak Bangs -->
+                    <!-- Widow's Peak Bangs -->
                     <path d="M100,125 Q130,105 160,135 Q190,105 220,125 Q210,85 160,82 Q110,85 100,125 Z" fill="#09050d" />
                 </g>
 
-                <!-- Rigged Vampire Claws / Hands -->
+                <!-- Rigged Vampire Claws -->
                 <g class="hands-cover-rig" id="vamp-hands">
-                    <!-- Left Claw -->
                     <g class="arm-left">
                         <path d="M40,340 C50,230 100,195 130,165" stroke="#09050d" stroke-width="26" stroke-linecap="round" fill="none" />
                         <path d="M120,172 L140,154 L138,142 L130,146 L124,142 L120,148 L114,146 L112,154 Z" fill="url(#vamp-skin)" stroke="#475569" stroke-width="1.5" />
                     </g>
-                    <!-- Right Claw -->
                     <g class="arm-right">
                         <path d="M280,340 C270,230 220,195 190,165" stroke="#09050d" stroke-width="26" stroke-linecap="round" fill="none" />
                         <path d="M200,172 L180,154 L182,142 L190,146 L196,142 L200,148 L206,146 L208,154 Z" fill="url(#vamp-skin)" stroke="#475569" stroke-width="1.5" />
@@ -245,7 +255,6 @@
                     <div class="input-shell password-shell">
                         <input type="password" id="password" placeholder="••••••••••••" spellcheck="false" required>
                         <button type="button" id="toggle-password" class="password-toggle-btn" aria-label="Toggle password visibility">
-                            <!-- Animated Eye SVG Icon -->
                             <svg class="eye-svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                 <path class="eye-lid-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                 <circle class="eye-ball-path" cx="12" cy="12" r="3"></circle>

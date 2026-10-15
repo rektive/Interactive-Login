@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let isTyping = false;
     let isEyesCovered = false;
+    let isProximityActive = false;
 
     // ----------------------------------------------------
     // 1. SIMPLE THEME TOGGLE ("Light" / "Dark")
@@ -43,17 +44,12 @@ document.addEventListener('DOMContentLoaded', () => {
             actionBtn.textContent = 'Surrender Soul';
         }
 
-        // Maintain active curiosity state if currently typing
         refreshStateAnimations();
     });
 
     // ----------------------------------------------------
     // 2. MATHEMATICAL PUPIL TARGETING ENGINE
     // ----------------------------------------------------
-    function getActiveCharacter() {
-        return html.getAttribute('data-theme') === 'dark' ? vampChar : kindChar;
-    }
-
     function moveIrisesToTarget(screenTargetX, screenTargetY) {
         if (isEyesCovered) return;
 
@@ -64,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const charSvg = isDark ? vampChar : kindChar;
         const svgRect = charSvg.getBoundingClientRect();
-        const scale = svgRect.width / 320; // SVG viewBox ratio
+        const scale = svgRect.width / 320;
 
         pairs.forEach(({ iris, centerRelX, centerRelY }) => {
             const eyeScreenX = svgRect.left + (centerRelX * scale);
@@ -74,7 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const deltaY = screenTargetY - eyeScreenY;
             const angle = Math.atan2(deltaY, deltaX);
 
-            // Maximum radius the pupil can explore
             const maxRadius = 6.5; 
             const distance = Math.min(Math.hypot(deltaX, deltaY) / 18, maxRadius);
 
@@ -86,11 +81,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ----------------------------------------------------
-    // 3. IDLE CURSOR TRACKING
+    // 3. CURSOR TRACKING & PROXIMITY DETECTION (Bite vs Nuzzle)
     // ----------------------------------------------------
     window.addEventListener('mousemove', (e) => {
-        if (isTyping || isEyesCovered) return;
-        moveIrisesToTarget(e.clientX, e.clientY);
+        const isDark = html.getAttribute('data-theme') === 'dark';
+        const activeChar = isDark ? vampChar : kindChar;
+        const headRect = activeChar.getBoundingClientRect();
+        
+        // Approximate head center
+        const headCenterX = headRect.left + headRect.width / 2;
+        const headCenterY = headRect.top + headRect.height * 0.45;
+
+        const distToHead = Math.hypot(e.clientX - headCenterX, e.clientY - headCenterY);
+
+        // Proximity threshold: within 80px of head center
+        if (distToHead < 80 && !isEyesCovered && !isTyping) {
+            if (!isProximityActive) {
+                isProximityActive = true;
+                if (isDark) {
+                    vampChar.classList.add('vampire-lunge');
+                } else {
+                    kindChar.classList.add('kind-nuzzle');
+                }
+            }
+        } else {
+            if (isProximityActive) {
+                isProximityActive = false;
+                vampChar.classList.remove('vampire-lunge');
+                kindChar.classList.remove('kind-nuzzle');
+            }
+        }
+
+        // Standard eye tracking if not currently typing or eyes covered
+        if (!isTyping && !isEyesCovered) {
+            moveIrisesToTarget(e.clientX, e.clientY);
+        }
     });
 
     // ----------------------------------------------------
@@ -119,9 +144,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function refreshStateAnimations() {
         const isDark = html.getAttribute('data-theme') === 'dark';
 
-        // Clear all states
-        kindChar.classList.remove('curious-kind', 'eyes-covered-kind');
-        vampChar.classList.remove('curious-vamp', 'eyes-covered-vamp');
+        // Clear all expression states
+        kindChar.classList.remove('curious-kind', 'eyes-covered-kind', 'kind-nuzzle');
+        vampChar.classList.remove('curious-vamp', 'eyes-covered-vamp', 'vampire-lunge');
+        isProximityActive = false;
 
         if (isEyesCovered) {
             if (isDark) vampChar.classList.add('eyes-covered-vamp');
@@ -171,19 +197,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const isPasswordHidden = passwordInput.type === 'password';
 
         if (isPasswordHidden) {
-            // SHOW PASSWORD: Reveal text, both characters cover their eyes and lean away
             passwordInput.type = 'text';
             isEyesCovered = true;
             togglePasswordBtn.classList.add('active');
             refreshStateAnimations();
         } else {
-            // HIDE PASSWORD: Mask text, characters uncover eyes and return to normal
             passwordInput.type = 'password';
             isEyesCovered = false;
             togglePasswordBtn.classList.remove('active');
             refreshStateAnimations();
 
-            // If user is currently focused in input, re-track caret
             if (document.activeElement === passwordInput && passwordInput.value.length > 0) {
                 isTyping = true;
                 refreshStateAnimations();
