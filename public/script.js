@@ -2,8 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Selectors
     const html = document.documentElement;
     const themeBtn = document.getElementById('theme-toggle');
+    const stageContainer = document.getElementById('stage-container');
     const kindChar = document.getElementById('kind-char');
     const vampChar = document.getElementById('vamp-char');
+    const flightBat = document.getElementById('flight-bat');
     
     // Irises
     const kindIrisL = document.getElementById('kind-iris-l');
@@ -11,23 +13,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const vampIrisL = document.getElementById('vamp-iris-l');
     const vampIrisR = document.getElementById('vamp-iris-r');
 
+    // Dashboard
+    const dashboardScreen = document.getElementById('dashboard-screen');
+    const dashAvatar = document.getElementById('dash-avatar');
+    const dashTitle = document.getElementById('dash-title');
+    const dashMsg = document.getElementById('dash-msg');
+    const logoutBtn = document.getElementById('logout-btn');
+
     // Form inputs & UI elements
+    const loginForm = document.getElementById('login-form');
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
     const togglePasswordBtn = document.getElementById('toggle-password');
     const caretMeasurer = document.getElementById('caret-measurer');
     const cardTitle = document.getElementById('card-title');
     const cardSubtitle = document.getElementById('card-subtitle');
-    const actionBtn = document.getElementById('action-btn');
 
     let isTyping = false;
     let isEyesCovered = false;
     let isProximityActive = false;
+    let isTransitioning = false;
 
     // ----------------------------------------------------
-    // 1. SIMPLE THEME TOGGLE ("Light" / "Dark")
+    // 1. THEME TOGGLE ("Light" / "Dark")
     // ----------------------------------------------------
     themeBtn.addEventListener('click', () => {
+        if (isTransitioning) return;
         const isCurrentlyDark = html.getAttribute('data-theme') === 'dark';
 
         if (isCurrentlyDark) {
@@ -35,23 +46,21 @@ document.addEventListener('DOMContentLoaded', () => {
             themeBtn.textContent = 'Dark';
             cardTitle.textContent = 'Good Morning!';
             cardSubtitle.textContent = 'Ready to continue your adventure?';
-            actionBtn.textContent = 'Enter Realm';
         } else {
             html.setAttribute('data-theme', 'dark');
             themeBtn.textContent = 'Light';
             cardTitle.textContent = 'Midnight Vault';
             cardSubtitle.textContent = 'Speak the incantation, mortal...';
-            actionBtn.textContent = 'Surrender Soul';
         }
 
         refreshStateAnimations();
     });
 
     // ----------------------------------------------------
-    // 2. MATHEMATICAL PUPIL TARGETING ENGINE
+    // 2. MATHEMATICAL IRIS / EYE TARGETING
     // ----------------------------------------------------
     function moveIrisesToTarget(screenTargetX, screenTargetY) {
-        if (isEyesCovered) return;
+        if (isEyesCovered || isTransitioning) return;
 
         const isDark = html.getAttribute('data-theme') === 'dark';
         const pairs = isDark 
@@ -81,38 +90,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ----------------------------------------------------
-    // 3. CURSOR TRACKING & PROXIMITY DETECTION (Bite vs Nuzzle)
+    // 3. PROXIMITY DETECTION (Bares Teeth vs Gentle Glow)
     // ----------------------------------------------------
     window.addEventListener('mousemove', (e) => {
+        if (isTransitioning) return;
         const isDark = html.getAttribute('data-theme') === 'dark';
         const activeChar = isDark ? vampChar : kindChar;
         const headRect = activeChar.getBoundingClientRect();
         
-        // Approximate head center
         const headCenterX = headRect.left + headRect.width / 2;
         const headCenterY = headRect.top + headRect.height * 0.45;
-
         const distToHead = Math.hypot(e.clientX - headCenterX, e.clientY - headCenterY);
 
-        // Proximity threshold: within 80px of head center
-        if (distToHead < 80 && !isEyesCovered && !isTyping) {
+        if (distToHead < 75 && !isEyesCovered && !isTyping) {
             if (!isProximityActive) {
                 isProximityActive = true;
                 if (isDark) {
-                    vampChar.classList.add('vampire-lunge');
+                    vampChar.classList.add('vamp-bare-teeth');
                 } else {
-                    kindChar.classList.add('kind-nuzzle');
+                    kindChar.classList.add('kind-gentle-glow');
                 }
             }
         } else {
             if (isProximityActive) {
                 isProximityActive = false;
-                vampChar.classList.remove('vampire-lunge');
-                kindChar.classList.remove('kind-nuzzle');
+                vampChar.classList.remove('vamp-bare-teeth');
+                kindChar.classList.remove('kind-gentle-glow');
             }
         }
 
-        // Standard eye tracking if not currently typing or eyes covered
         if (!isTyping && !isEyesCovered) {
             moveIrisesToTarget(e.clientX, e.clientY);
         }
@@ -144,9 +150,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function refreshStateAnimations() {
         const isDark = html.getAttribute('data-theme') === 'dark';
 
-        // Clear all expression states
-        kindChar.classList.remove('curious-kind', 'eyes-covered-kind', 'kind-nuzzle');
-        vampChar.classList.remove('curious-vamp', 'eyes-covered-vamp', 'vampire-lunge');
+        kindChar.classList.remove('curious-kind', 'eyes-covered-kind', 'kind-gentle-glow');
+        vampChar.classList.remove('curious-vamp', 'eyes-covered-vamp', 'vamp-bare-teeth');
         isProximityActive = false;
 
         if (isEyesCovered) {
@@ -162,6 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handleTypingEvent(e) {
+        if (isTransitioning) return;
         const input = e.target;
         if (input.value.length > 0) {
             isTyping = true;
@@ -191,9 +197,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ----------------------------------------------------
-    // 5. SHOW PASSWORD -> COVER EYES WITH HANDS & LEAN
+    // 5. SHOW PASSWORD -> COVER EYES WITH HANDS
     // ----------------------------------------------------
     togglePasswordBtn.addEventListener('click', () => {
+        if (isTransitioning) return;
         const isPasswordHidden = passwordInput.type === 'password';
 
         if (isPasswordHidden) {
@@ -214,5 +221,64 @@ document.addEventListener('DOMContentLoaded', () => {
                 moveIrisesToTarget(coords.x, coords.y);
             }
         }
+    });
+
+    // ----------------------------------------------------
+    // 6. LOGIN: JUMP OUT -> TRANSFORM TO BAT -> FLY AWAY
+    // ----------------------------------------------------
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (isTransitioning) return;
+        isTransitioning = true;
+
+        const isDark = html.getAttribute('data-theme') === 'dark';
+        const userEntered = usernameInput.value || (isDark ? 'Lord of Shadows' : 'Noble Adventurer');
+
+        if (isDark) {
+            vampChar.classList.add('vamp-jump-out');
+
+            setTimeout(() => {
+                flightBat.classList.add('bat-fly-away');
+            }, 260);
+
+            setTimeout(() => {
+                dashAvatar.textContent = '🦇';
+                dashTitle.textContent = `Welcome, ${userEntered}`;
+                dashMsg.textContent = 'The nocturnal realm bends to your dark command.';
+                dashboardScreen.classList.add('active');
+            }, 1200);
+
+        } else {
+            kindChar.classList.add('kind-ascend-fly');
+
+            setTimeout(() => {
+                dashAvatar.textContent = '☀️';
+                dashTitle.textContent = `Greetings, ${userEntered}!`;
+                dashMsg.textContent = 'The light shines brightly upon your quest.';
+                dashboardScreen.classList.add('active');
+            }, 900);
+        }
+    });
+
+    // ----------------------------------------------------
+    // 7. LOGOUT / RESET SEQUENCE
+    // ----------------------------------------------------
+    logoutBtn.addEventListener('click', () => {
+        dashboardScreen.classList.remove('active');
+
+        vampChar.classList.remove('vamp-jump-out');
+        flightBat.classList.remove('bat-fly-away');
+        vampChar.style.opacity = '1';
+
+        kindChar.classList.remove('kind-ascend-fly');
+        kindChar.style.opacity = '1';
+
+        passwordInput.value = '';
+        passwordInput.type = 'password';
+        togglePasswordBtn.classList.remove('active');
+        isEyesCovered = false;
+        isTyping = false;
+        isTransitioning = false;
+        refreshStateAnimations();
     });
 });

@@ -12,22 +12,20 @@
 <body>
     <!-- ATMOSPHERIC BACKGROUND SCENERY -->
     <div class="scenery-viewport">
-        <!-- Light Theme: Floating Sunlit Alpine Meadow & Cloud Castles -->
+        <!-- Light Theme Scene -->
         <div class="scene scene-light">
             <div class="sun-orb"></div>
             <div class="cloud-layer cloud-far"></div>
             <div class="floating-island island-left"></div>
             <div class="floating-island island-right"></div>
-            <div class="pine-silhouette"></div>
             <div class="cloud-layer cloud-near"></div>
         </div>
 
-        <!-- Dark Theme: Gothic Transylvanian Castle Balcony at Midnight -->
+        <!-- Dark Theme Scene -->
         <div class="scene scene-dark">
-            <div class="blood-moon"></div>
+            <div class="blood-moon" id="blood-moon"></div>
             <div class="gothic-spires"></div>
             
-            <!-- Real Animated Vector SVG Bats (No broken emoji boxes) -->
             <div class="bats-container">
                 <svg class="svg-bat bat-1" viewBox="0 0 64 36">
                     <path class="wing wing-left" d="M32,18 Q20,2 2,8 Q12,18 20,18 Q26,26 32,18 Z" fill="#09040d" />
@@ -39,22 +37,17 @@
                     <path class="wing wing-right" d="M32,18 Q44,2 62,8 Q52,18 44,18 Q38,26 32,18 Z" fill="#09040d" />
                     <ellipse cx="32" cy="18" rx="4" ry="7" fill="#000" />
                 </svg>
-                <svg class="svg-bat bat-3" viewBox="0 0 64 36">
-                    <path class="wing wing-left" d="M32,18 Q20,2 2,8 Q12,18 20,18 Q26,26 32,18 Z" fill="#09040d" />
-                    <path class="wing wing-right" d="M32,18 Q44,2 62,8 Q52,18 44,18 Q38,26 32,18 Z" fill="#09040d" />
-                    <ellipse cx="32" cy="18" rx="4" ry="7" fill="#000" />
-                </svg>
             </div>
             
             <div class="crimson-fog"></div>
         </div>
     </div>
 
-    <!-- SIMPLE THEME TOGGLE BUTTON -->
+    <!-- THEME TOGGLE BUTTON -->
     <button id="theme-toggle" class="theme-btn" type="button">Dark</button>
 
     <!-- MAIN INTERACTIVE STAGE -->
-    <main class="stage-container">
+    <main class="stage-container" id="stage-container">
         <!-- SVG CARTOON CHARACTER RIG -->
         <div class="character-rig" id="character-rig">
             
@@ -95,13 +88,11 @@
                     <ellipse class="blush" cx="198" cy="195" rx="12" ry="7" fill="#fb7185" opacity="0.6" />
                     <path d="M156,180 Q160,185 164,180" stroke="#f43f5e" stroke-width="3" fill="none" stroke-linecap="round" />
                     
-                    <!-- Eyebrows -->
                     <g class="eyebrows">
                         <path class="brow brow-left" d="M118,142 Q132,134 146,142" stroke="#b45309" stroke-width="4.5" stroke-linecap="round" fill="none" />
                         <path class="brow brow-right" d="M174,142 Q188,134 202,142" stroke="#b45309" stroke-width="4.5" stroke-linecap="round" fill="none" />
                     </g>
 
-                    <!-- Eyes -->
                     <g class="eye-socket eye-left" transform="translate(116, 150)">
                         <ellipse cx="14" cy="14" rx="14" ry="14" fill="#ffffff" />
                         <g class="iris-pupil" id="kind-iris-l">
@@ -112,8 +103,6 @@
                     </g>
                     <g class="eye-socket eye-right" transform="translate(176, 150)">
                         <ellipse cx="14" cy="14" rx="14" ry="14" fill="#ffffff" />
-                        <!-- Winking eyelid overlay for kind proximity interaction -->
-                        <path class="wink-lid" d="M0,14 Q14,24 28,14" stroke="#475569" stroke-width="3.5" fill="none" stroke-linecap="round" style="display:none;" />
                         <g class="iris-pupil" id="kind-iris-r">
                             <circle cx="14" cy="14" r="8" fill="#0284c7" />
                             <circle cx="14" cy="14" r="4.5" fill="#0f172a" />
@@ -172,15 +161,13 @@
                     <path d="M206,186 L196,196" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" />
                     <polygon points="160,165 154,190 163,188" fill="#64748b" />
 
-                    <!-- RE-ENGINEERED EYEBROWS: Arched Villainous Geometry -->
+                    <!-- Sleek Eyebrows -->
                     <g class="vamp-brows-layer">
-                        <!-- Left Eyebrow -->
                         <path class="vamp-brow brow-left" id="vamp-brow-l" d="M110,146 Q128,124 148,142" stroke="#000" stroke-width="6" stroke-linecap="round" fill="none" />
-                        <!-- Right Eyebrow -->
                         <path class="vamp-brow brow-right" id="vamp-brow-r" d="M172,142 Q192,124 210,146" stroke="#000" stroke-width="6" stroke-linecap="round" fill="none" />
                     </g>
 
-                    <!-- Piercing Crimson Vampire Eyes -->
+                    <!-- Crimson Eyes -->
                     <g class="eye-socket eye-left" transform="translate(114, 150)">
                         <ellipse cx="14" cy="13" rx="14" ry="10" fill="#1e1b2e" />
                         <g class="iris-pupil" id="vamp-iris-l">
@@ -198,22 +185,22 @@
                         </g>
                     </g>
 
-                    <!-- Dynamic Vampire Jaw & Fangs -->
-                    <g class="mouth-group" id="vamp-mouth-rig">
-                        <!-- Normal closed smirk mouth -->
-                        <path class="vamp-mouth-line" d="M140,215 Q160,208 180,214" stroke="#450a0a" stroke-width="3.5" stroke-linecap="round" fill="none" />
-                        <polygon class="fang fang-l" points="146,215 150,215 148,223" fill="#ffffff" />
-                        <polygon class="fang fang-r" points="170,214 174,214 172,222" fill="#ffffff" />
-                        
-                        <!-- Open Biting Maw (revealed dynamically when cursor gets close) -->
-                        <g class="vamp-bite-maw" id="vamp-bite-maw" style="display:none;">
-                            <path d="M136,206 Q160,195 184,206 Q190,236 160,238 Q130,236 136,206 Z" fill="#260408" stroke="#7f1d1d" stroke-width="2"/>
-                            <!-- Upper Fangs -->
-                            <polygon points="144,204 150,204 147,218" fill="#fff" />
-                            <polygon points="170,204 176,204 173,218" fill="#fff" />
-                            <!-- Lower Fangs -->
-                            <polygon points="148,234 153,234 150,223" fill="#fff" />
-                            <polygon points="167,234 172,234 169,223" fill="#fff" />
+                    <!-- MOUTH RIG (Calm smirk with gentle baring of fangs on proximity) -->
+                    <g class="vamp-mouth-container" id="vamp-mouth-container" transform="translate(160, 214)">
+                        <!-- Normal Calm Closed Mouth -->
+                        <g class="vamp-normal-mouth" id="vamp-normal-mouth">
+                            <path d="M-20,0 Q0,-6 20,0" stroke="#3b070d" stroke-width="3" stroke-linecap="round" fill="none" />
+                            <polygon points="-12,0 -8,0 -10,4" fill="#ffffff" />
+                            <polygon points="8,0 12,0 10,4" fill="#ffffff" />
+                        </g>
+
+                        <!-- Bared Teeth Mouth -->
+                        <g class="vamp-bared-teeth" id="vamp-bared-teeth" style="opacity: 0; transform: scaleY(0.4);">
+                            <path d="M-22,-2 Q0,-9 22,-2 Q20,11 0,11 Q-20,11 -22,-2 Z" fill="#180407" stroke="#450a0a" stroke-width="1.5" />
+                            <path d="M-18,-1 L18,-1" stroke="#f1f5f9" stroke-width="3" stroke-linecap="round" />
+                            <polygon points="-14,-2 -9,-2 -11.5,8" fill="#ffffff" />
+                            <polygon points="9,-2 14,-2 11.5,8" fill="#ffffff" />
+                            <path d="M-18,10 Q0,11 18,10" stroke="#680f1b" stroke-width="1.5" fill="none" />
                         </g>
                     </g>
 
@@ -221,7 +208,7 @@
                     <path d="M100,125 Q130,105 160,135 Q190,105 220,125 Q210,85 160,82 Q110,85 100,125 Z" fill="#09050d" />
                 </g>
 
-                <!-- Rigged Vampire Claws -->
+                <!-- Rigged Claws -->
                 <g class="hands-cover-rig" id="vamp-hands">
                     <g class="arm-left">
                         <path d="M40,340 C50,230 100,195 130,165" stroke="#09050d" stroke-width="26" stroke-linecap="round" fill="none" />
@@ -233,11 +220,24 @@
                     </g>
                 </g>
             </svg>
+
+            <!-- 3. FLY-AWAY BAT (Transforms from Vampire when Login is clicked) -->
+            <svg class="flight-bat" id="flight-bat" viewBox="0 0 160 100">
+                <g class="flight-bat-inner">
+                    <path class="bat-w-l" d="M80,50 Q60,10 20,20 Q5,30 2,45 Q20,40 35,55 Q55,58 70,75 Z" fill="#0a0510" />
+                    <path class="bat-w-r" d="M80,50 Q100,10 140,20 Q155,30 158,45 Q140,40 125,55 Q105,58 90,75 Z" fill="#0a0510" />
+                    <ellipse cx="80" cy="52" rx="9" ry="15" fill="#050208" />
+                    <polygon points="74,40 70,28 77,35" fill="#050208" />
+                    <polygon points="86,40 90,28 83,35" fill="#050208" />
+                    <circle cx="76" cy="45" r="2" fill="#ef4444" />
+                    <circle cx="84" cy="45" r="2" fill="#ef4444" />
+                </g>
+            </svg>
         </div>
 
-        <!-- HIGH-END LOGIN CARD -->
-        <div class="card-wrapper">
-            <form class="login-card" id="login-form" autocomplete="off" onsubmit="event.preventDefault();">
+        <!-- STANDARD MODERN LOGIN CARD -->
+        <div class="card-wrapper" id="card-wrapper">
+            <form class="login-card" id="login-form" autocomplete="off">
                 <div class="card-header">
                     <h2 id="card-title">Good Morning!</h2>
                     <p id="card-subtitle">Ready to continue your adventure?</p>
@@ -264,10 +264,20 @@
                     </div>
                 </div>
 
-                <button type="submit" class="action-btn" id="action-btn">Enter Realm</button>
+                <button type="submit" class="action-btn" id="action-btn">Login</button>
             </form>
         </div>
     </main>
+
+    <!-- LOGGED IN SUCCESS SCREEN -->
+    <div class="dashboard-screen" id="dashboard-screen">
+        <div class="dashboard-card">
+            <div class="dash-avatar" id="dash-avatar">✨</div>
+            <h1 id="dash-title">Welcome Back!</h1>
+            <p id="dash-msg">Access granted to the sanctuary.</p>
+            <button class="logout-btn" id="logout-btn" type="button">Log Out</button>
+        </div>
+    </div>
 
     <!-- Hidden measuring span for exact caret tracking -->
     <span id="caret-measurer" class="measurer-probe"></span>
