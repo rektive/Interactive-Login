@@ -35,6 +35,30 @@ document.addEventListener('DOMContentLoaded', () => {
     let isTransitioning = false;
 
     // ----------------------------------------------------
+    // 0. CHECK PERSISTED JWT SESSION ON LOAD
+    // ----------------------------------------------------
+    async function checkExistingSession() {
+        try {
+            const res = await fetch('/api/verify');
+            if (res.ok) {
+                const data = await res.json();
+                if (data.authenticated && data.user) {
+                    const isDark = html.getAttribute('data-theme') === 'dark';
+                    dashAvatar.textContent = isDark ? '🦇' : '☀️';
+                    dashTitle.textContent = `Welcome Back, ${data.user.username}`;
+                    dashMsg.textContent = isDark
+                        ? 'Active session token verified. The nocturnal crypt remains open.'
+                        : 'Active session token verified. The daylight citadel welcomes you.';
+                    dashboardScreen.classList.add('active');
+                }
+            }
+        } catch (err) {
+            console.error('Session verification skipped or unreachable:', err);
+        }
+    }
+    checkExistingSession();
+
+    // ----------------------------------------------------
     // 1. THEME TOGGLE ("Light" / "Dark")
     // ----------------------------------------------------
     themeBtn.addEventListener('click', () => {
@@ -224,46 +248,74 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ----------------------------------------------------
-    // 6. LOGIN: JUMP OUT -> TRANSFORM TO BAT -> FLY AWAY
+    // 6. LOGIN: AUTHENTICATE JWT & TRIGGER ANIMATION
     // ----------------------------------------------------
-    loginForm.addEventListener('submit', (e) => {
+    loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         if (isTransitioning) return;
-        isTransitioning = true;
 
-        const isDark = html.getAttribute('data-theme') === 'dark';
-        const userEntered = usernameInput.value || (isDark ? 'Lord of Shadows' : 'Noble Adventurer');
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value;
 
-        if (isDark) {
-            vampChar.classList.add('vamp-jump-out');
+        try {
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
 
-            setTimeout(() => {
-                flightBat.classList.add('bat-fly-away');
-            }, 260);
+            const data = await res.json();
 
-            setTimeout(() => {
-                dashAvatar.textContent = '🦇';
-                dashTitle.textContent = `Welcome, ${userEntered}`;
-                dashMsg.textContent = 'The nocturnal realm bends to your dark command.';
-                dashboardScreen.classList.add('active');
-            }, 1200);
+            if (!res.ok) {
+                alert(data.message || 'Authentication failed. Please verify credentials.');
+                return;
+            }
 
-        } else {
-            kindChar.classList.add('kind-ascend-fly');
+            // Lock UI and proceed with fly-away animations
+            isTransitioning = true;
+            const isDark = html.getAttribute('data-theme') === 'dark';
+            const userEntered = (data.user && data.user.username) || username;
 
-            setTimeout(() => {
-                dashAvatar.textContent = '☀️';
-                dashTitle.textContent = `Greetings, ${userEntered}!`;
-                dashMsg.textContent = 'The light shines brightly upon your quest.';
-                dashboardScreen.classList.add('active');
-            }, 900);
+            if (isDark) {
+                vampChar.classList.add('vamp-jump-out');
+
+                setTimeout(() => {
+                    flightBat.classList.add('bat-fly-away');
+                }, 260);
+
+                setTimeout(() => {
+                    dashAvatar.textContent = '🦇';
+                    dashTitle.textContent = `Welcome, ${userEntered}`;
+                    dashMsg.textContent = 'The nocturnal realm bends to your dark command.';
+                    dashboardScreen.classList.add('active');
+                }, 1200);
+
+            } else {
+                kindChar.classList.add('kind-ascend-fly');
+
+                setTimeout(() => {
+                    dashAvatar.textContent = '☀️';
+                    dashTitle.textContent = `Greetings, ${userEntered}!`;
+                    dashMsg.textContent = 'The light shines brightly upon your quest.';
+                    dashboardScreen.classList.add('active');
+                }, 900);
+            }
+        } catch (err) {
+            console.error('Authentication request error:', err);
+            alert('Unable to contact the server. Please ensure Node.js is running.');
         }
     });
 
     // ----------------------------------------------------
-    // 7. LOGOUT / RESET SEQUENCE
+    // 7. LOGOUT: CLEAR JWT & RESET VIEW
     // ----------------------------------------------------
-    logoutBtn.addEventListener('click', () => {
+    logoutBtn.addEventListener('click', async () => {
+        try {
+            await fetch('/api/logout', { method: 'POST' });
+        } catch (err) {
+            console.error('Logout error:', err);
+        }
+
         dashboardScreen.classList.remove('active');
 
         vampChar.classList.remove('vamp-jump-out');

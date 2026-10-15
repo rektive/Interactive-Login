@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/rektive/Interactive-Login#readme",
   "dependencies": {
-    "express": "^5.3.0"
+    "cookie-parser": "^1.4.7",
+    "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3"
   }
 }
