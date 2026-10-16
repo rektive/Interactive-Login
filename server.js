@@ -78,5 +78,15 @@ app.post('/api/logout', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`✨ Cartoon Login Stage live at: http://localhost:${PORT}`);
+    console.log(`Login Stage live at: http://localhost:${PORT}`);
 });
+
+// For vercel
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Login Stage live at: http://localhost:${PORT}`);
+    });
+}
+
+// Export for Vercel:
+module.exports = app;
