@@ -50,3 +50,6 @@ interactive-login/
     ├── index.html
     ├── style.css
     └── script.js
+```
+# Author: Zhuravlov Nikita
+# Contact: zhuravlovnick@gmail.com
